@@ -47,6 +47,10 @@ public class Utils {
         plugin.getNMS().sendActionBar(player,message);
     }
 
+    public void deleteBossBar(Player player) {
+        plugin.getNMS().deleteBossBar(player);
+    }
+
     private String color(String message) {
         return ChatColor.translateAlternateColorCodes('&',message);
     }
