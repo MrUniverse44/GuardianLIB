@@ -5,7 +5,6 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>GuardianLIB</name>
-    <url>rigox.club</url>
     <description>GuardianLIB is an library from Darkness Development</description>
     <modules>
         <module>Core</module>
