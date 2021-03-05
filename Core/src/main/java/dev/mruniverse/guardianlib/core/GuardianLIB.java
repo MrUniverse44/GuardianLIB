@@ -44,10 +44,10 @@ public final class GuardianLIB extends JavaPlugin {
         return hasPAPI;
     }
 
-    public GuardianLIB getInstance() {
+    public static GuardianLIB getInstance() {
         return instance;
     }
-    public GuardianLIB getControl() {
+    public static GuardianLIB getControl() {
         return instance;
     }
 
