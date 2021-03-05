@@ -47,6 +47,9 @@ public final class GuardianLIB extends JavaPlugin {
     public GuardianLIB getInstance() {
         return instance;
     }
+    public GuardianLIB getControl() {
+        return instance;
+    }
 
     public Logger getLogs() {
         return logger;
