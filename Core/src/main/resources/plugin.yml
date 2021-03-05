@@ -1,0 +1,4 @@
+name: GuardianLIB
+version: ${project.version}
+main: dev.mruniverse.guardianlib.core.GuardianLIB
+description: GuardianLIB is an library created for Darkness Development plugins.

@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dev.mruniverse.guardianlib</groupId>
+    <artifactId>GuardianLIB-Parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>GuardianLIB</name>
+    <url>rigox.club</url>
+    <description>GuardianLIB is an library from Darkness Development</description>
+    <modules>
+        <module>Core</module>
+        <module>Aggregated</module>
+        <module>v1_8_R1</module>
+        <module>v1_8_R2</module>
+        <module>v1_8_R3</module>
+        <module>v1_9_R1</module>
+        <module>v1_9_R2</module>
+        <module>v1_10_R1</module>
+        <module>v1_11_R1</module>
+        <module>v1_12_R1</module>
+        <module>v1_13_R1</module>
+        <module>v1_13_R2</module>
+        <module>v1_14_R1</module>
+        <module>v1_15_R1</module>
+        <module>v1_16_R1</module>
+        <module>v1_16_R2</module>
+        <module>v1_16_R3</module>
+        <module>Dist</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spigot-api.version>1.16.2-R0.1-SNAPSHOT</spigot-api.version>
+        <maven.deploy.skip>true</maven.deploy.skip> <!-- Deployment is disabled, no public APIs atm -->
+    </properties>
+    <repositories>
+        <!-- NMS Repository -->
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.org/repository/nms/</url>
+        </repository>
+        <!-- SpigotAPI Repository -->
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+        </repository>
+        <!-- PlaceholderAPI Repository -->
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.org/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.org/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>
