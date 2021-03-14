@@ -1,0 +1,17 @@
+#   _____                     _ _               _      _ _
+#  / ____|                   | (_)             | |    (_) |
+# | |  __ _   _  __ _ _ __ __| |_  __ _ _ __   | |     _| |__
+# | | |_ | | | |/ _` | '__/ _` | |/ _` | '_ \  | |    | | '_ \
+# | |__| | |_| | (_| | | | (_| | | (_| | | | | | |____| | |_) |
+#  \_____|\__,_|\__,_|_|  \__,_|_|\__,_|_| |_| |______|_|_.__/
+#
+# Created by MrUniverse44
+# Version: 1.0.0
+settings:
+  # Check update notifications by GuardianLIB in your console
+  update-check: true
+  # Toggle Slime World System for a better performance (You need the plugin SlimeWorldManager for this action)
+  SlimeWorld:
+    toggle: true
+    # Load Types: file,mysql
+    loadType: file
