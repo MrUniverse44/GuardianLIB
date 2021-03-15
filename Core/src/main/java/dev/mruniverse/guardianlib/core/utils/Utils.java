@@ -1,19 +1,53 @@
 package dev.mruniverse.guardianlib.core.utils;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.utils.xseries.XEnchantment;
+import dev.mruniverse.guardianlib.core.utils.xseries.XMaterial;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressWarnings("unused")
 public class Utils {
     private final GuardianLIB plugin;
     public Utils(GuardianLIB main) {
         plugin = main;
     }
-
+    public void sendMessage(Player player,String message) {
+        if(message == null) message = "Unknown Message";
+        if(plugin.hasPAPI()) {
+            message = PlaceholderAPI.setPlaceholders(player,message);
+        }
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        player.sendMessage(message);
+    }
+    public void sendMessage(CommandSender sender, String message) {
+        if(message == null) message = "Unknown Message";
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        sender.sendMessage(message);
+    }
+    public void sendCenteredMessage(Player player,String message) {
+        if(message == null) message = "Unknown Message";
+        if(plugin.hasPAPI()) {
+            message = PlaceholderAPI.setPlaceholders(player,message);
+        }
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        player.sendMessage(CenterText.sendToCenter(message));
+    }
+    public void sendCenteredMessage(CommandSender sender,String message) {
+        if(message == null) message = "Unknown Message";
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        sender.sendMessage(CenterText.sendToCenter(message));
+    }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
             if(plugin.hasPAPI()) {
@@ -97,4 +131,42 @@ public class Utils {
     private String color(String message) {
         return ChatColor.translateAlternateColorCodes('&',message);
     }
+
+    public ItemStack getItem(XMaterial xItem, String name, List<String> lore) {
+        ItemStack itemToReturn = xItem.parseItem();
+        if(itemToReturn != null) {
+            ItemMeta ReturnMeta = itemToReturn.getItemMeta();
+            if(ReturnMeta != null) {
+                ReturnMeta.setDisplayName(recolor(name));
+                ReturnMeta.setLore(recolorLore(lore));
+                itemToReturn.setItemMeta(ReturnMeta);
+                return itemToReturn;
+            }
+            return itemToReturn;
+        }
+        return plugin.getNMS().getItemStack(xItem.parseMaterial(), recolor(name), recolorLore(lore));
+    }
+    @SuppressWarnings("ConstantConditions")
+    public ItemStack getEnchantmentList(ItemStack item, List<String> enchantments, String path) {
+        for(String enchant : enchantments) {
+            try {
+                item = XEnchantment.addEnchantFromString(item, enchant);
+            } catch(Throwable throwable) {
+                plugin.getLogs().error("Can't add Enchantment: " + enchant);
+            }
+        }
+        return item;
+    }
+
+    public static String recolor(String message) {
+        return ChatColor.translateAlternateColorCodes('&',message);
+    }
+    public static List<String> recolorLore(List<String> loreToRecolor) {
+        List<String> recolored = new ArrayList<>();
+        for(String color : loreToRecolor) {
+            recolored.add(ChatColor.translateAlternateColorCodes('&',color));
+        }
+        return recolored;
+    }
+
 }
