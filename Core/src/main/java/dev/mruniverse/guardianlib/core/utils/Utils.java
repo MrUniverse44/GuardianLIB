@@ -4,10 +4,7 @@ import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.utils.xseries.XEnchantment;
 import dev.mruniverse.guardianlib.core.utils.xseries.XMaterial;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -130,6 +127,31 @@ public class Utils {
 
     private String color(String message) {
         return ChatColor.translateAlternateColorCodes('&',message);
+    }
+
+    public void playSound(Player player,String soundName) {
+        try{
+            player.playSound(player.getLocation(), Sound.valueOf(soundName), 5F,1F);
+        }catch (Throwable ignored){
+            plugin.getLogs().info("Sound: " + soundName + " doesn't exist.");
+        }
+    }
+    public void playSound(Player player,String soundName,float volume) {
+        try{
+            player.playSound(player.getLocation(), Sound.valueOf(soundName), volume,1F);
+        }catch (Throwable ignored){
+            plugin.getLogs().info("Sound: " + soundName + " doesn't exist.");
+        }
+    }
+    public boolean checkValidSound(String soundName) {
+        return EnumUtils.isValidEnum(Sound.class,soundName);
+    }
+    public void playSound(Player player,String soundName,float volume,float pitch) {
+        try{
+            player.playSound(player.getLocation(), Sound.valueOf(soundName), volume, pitch);
+        }catch (Throwable ignored){
+            plugin.getLogs().info("Sound: " + soundName + " doesn't exist.");
+        }
     }
 
     public ItemStack getItem(XMaterial xItem, String name, List<String> lore) {
