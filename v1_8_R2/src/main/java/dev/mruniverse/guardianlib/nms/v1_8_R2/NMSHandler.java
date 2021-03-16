@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class NMSHandler implements NMS {
-    private final HashMap<Player, EntityWither> bossBar = new HashMap<Player, EntityWither>();
+    private final HashMap<Player, EntityWither> bossBar = new HashMap<>();
     public void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
         PlayerConnection pConn = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle pTitleInfo = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
