@@ -130,6 +130,7 @@ public class Utils {
     }
 
     public void playSound(Player player,String soundName) {
+        soundName = soundName.toUpperCase();
         try{
             player.playSound(player.getLocation(), Sound.valueOf(soundName), 5F,1F);
         }catch (Throwable ignored){
@@ -137,6 +138,7 @@ public class Utils {
         }
     }
     public void playSound(Player player,String soundName,float volume) {
+        soundName = soundName.toUpperCase();
         try{
             player.playSound(player.getLocation(), Sound.valueOf(soundName), volume,1F);
         }catch (Throwable ignored){
@@ -144,9 +146,11 @@ public class Utils {
         }
     }
     public boolean checkValidSound(String soundName) {
+        soundName = soundName.toUpperCase();
         return EnumUtils.isValidEnum(Sound.class,soundName);
     }
     public void playSound(Player player,String soundName,float volume,float pitch) {
+        soundName = soundName.toUpperCase();
         try{
             player.playSound(player.getLocation(), Sound.valueOf(soundName), volume, pitch);
         }catch (Throwable ignored){
