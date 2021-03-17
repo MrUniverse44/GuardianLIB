@@ -1,6 +1,17 @@
 # GuardianLIB
+
+<img alt="GuardianLIB Image" src="https://i.imgur.com/ZmIomKW.png" class="center">
+
 GuardianLIB is a library created for plugins from Darkness Development
 
+Features:
+* Hologram System (Personal & Global Holograms)
+* World System (With SlimeWorldGenerator)
+* ActionBar,Title & Subtitle, Sounds, Text Utilities, BossBar System, Simple Logger System
+* PlaceholderAPI Support
+
+Java Docs:
+* Coming Soon.
 
 Maven Usage (With jitpack):
 ```XML
