@@ -16,13 +16,11 @@ import java.util.Map;
 
 public class Holograms {
     private final HashMap<String, Hologram> listHolograms;
-    //private final HashMap<String, Player[]> holoPlayers;
     private final HashMap<String, List<String>> holoLines;
 
 
     public Holograms() {
         this.listHolograms = new HashMap<>();
-        //this.holoPlayers = new HashMap<>();
         this.holoLines = new HashMap<>();
     }
 
@@ -42,14 +40,8 @@ public class Holograms {
         List<String> lines = Utils.recolorLore(Arrays.asList(holoLines));
         VisibilityManager visibility = hologram.getVisibilityManager();
         visibility.setVisibleByDefault(true);
-        //this.holoPlayers.put(holoName, PlayersOfHologram);
         this.holoLines.put(holoName,lines);
         holoAppend(hologram,lines);
-        //for(Player player : PlayersOfHologram) {
-        //    if(player.isOnline()) {
-        //        visibility.showTo(player);
-        //    }
-        //}
         this.listHolograms.put(holoName, hologram);
     }
 
@@ -83,8 +75,4 @@ public class Holograms {
     private String color(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
-
-    //public Player[] getPlayers() {
-    //    return player;
-    //}
 }

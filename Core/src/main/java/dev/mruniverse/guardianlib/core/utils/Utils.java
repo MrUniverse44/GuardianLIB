@@ -1,6 +1,7 @@
 package dev.mruniverse.guardianlib.core.utils;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.enums.HologramType;
 import dev.mruniverse.guardianlib.core.utils.xseries.XEnchantment;
 import dev.mruniverse.guardianlib.core.utils.xseries.XMaterial;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -171,6 +172,24 @@ public class Utils {
             return itemToReturn;
         }
         return plugin.getNMS().getItemStack(xItem.parseMaterial(), recolor(name), recolorLore(lore));
+    }
+    public HologramType getHoloTypeByString(String text) {
+        switch (text.toLowerCase()){
+            case "sh":
+            case "superhologram":
+            case "superholograms":
+                return HologramType.SuperHolograms;
+            case "ph":
+            case "personalhologram":
+            case "personalholograms":
+                return HologramType.PersonalHolograms;
+            case "sph":
+            case "superpersonalhologram":
+            case "superpersonalholograms":
+                return HologramType.SuperPersonalHolograms;
+            default:
+                return HologramType.Holograms;
+        }
     }
     @SuppressWarnings("ConstantConditions")
     public ItemStack getEnchantmentList(ItemStack item, List<String> enchantments, String path) {
