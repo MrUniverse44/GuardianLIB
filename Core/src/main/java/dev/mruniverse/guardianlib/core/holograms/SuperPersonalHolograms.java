@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 public class SuperPersonalHolograms {
-    private final GuardianLIB guardianLIB = GuardianLIB.getControl();
+    private final GuardianLIB guardianLIB;
     private final String holoPrivateID;
     private final Player player;
     private final List<String> holoAS;
@@ -36,7 +36,8 @@ public class SuperPersonalHolograms {
         return this.distance;
     }
 
-    public SuperPersonalHolograms(Player player, Location location,String holoPrivateID, String[] lines) {
+    public SuperPersonalHolograms(GuardianLIB guardianLIB, Player player, Location location,String holoPrivateID, String[] lines) {
+        this.guardianLIB = guardianLIB;
         this.holoLocation = location;
         this.holoPrivateID = holoPrivateID;
         this.player = player;
