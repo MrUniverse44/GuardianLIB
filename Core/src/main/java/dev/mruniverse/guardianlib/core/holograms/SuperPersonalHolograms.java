@@ -69,6 +69,8 @@ public class SuperPersonalHolograms {
         }
     }
 
+    public Player getPlayer() { return this.player; }
+
     public Location getLocation() {
         return this.holoLocation;
     }
