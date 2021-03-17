@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianlib.core.nms;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +12,11 @@ public interface NMS {
     void sendActionBar(Player player, String msg);
     void sendBossBar(Player player, String message);
     void sendBossBar(Player player, String message,float percentage);
+    void spawnHologram(Player player, String holoPrivateID, String holoLineText, Location holoLocation);
+    void updateHologramText(Player player,String holoPrivateID,String holoLineText);
+    void deleteHologram(Player player,String holoPrivateID);
     void deleteBossBar(Player player);
+    Location getHologramLocation(String holoPrivateID);
     boolean BossHasPlayer(Player player);
     ItemStack getItemStack(Material material, String itemName, List<String> lore);
 }

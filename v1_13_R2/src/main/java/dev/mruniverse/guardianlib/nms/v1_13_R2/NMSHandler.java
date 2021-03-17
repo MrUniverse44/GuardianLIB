@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianlib.nms.v1_13_R2;
 
+import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_13_R2.*;
@@ -16,7 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class NMSHandler implements NMS {
-    private final HashMap<Player, EntityWither> bossBar = new HashMap<Player, EntityWither>();
+    private final HashMap<Player, EntityWither> bossBar = new HashMap<>();
+    private final HashMap<String,EntityArmorStand> hologramsID = new HashMap<>();
     public void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
         PlayerConnection pConn = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle pTitleInfo = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
@@ -35,6 +37,40 @@ public final class NMSHandler implements NMS {
             PacketPlayOutTitle pTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, iComp);
             pConn.sendPacket(pTitle);
         }
+    }
+
+    public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
+        EntityArmorStand armorStand = new EntityArmorStand((World)holoLocation.getWorld(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+
+        armorStand.setNoGravity(true);
+        armorStand.setCustomName(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + holoLineText + "\"}"));
+        armorStand.setCustomNameVisible(true);
+        armorStand.setInvisible(true);
+        armorStand.setSmall(true);
+        armorStand.setBasePlate(false);
+
+        PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+        hologramsID.put(holoPrivateID,armorStand);
+    }
+    public Location getHologramLocation(String holoPrivateID) {
+        return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
+    }
+    public void updateHologramText(Player player,String holoPrivateID,String holoLineText) {
+        if(!hologramsID.containsKey(holoPrivateID)) {
+            GuardianLIB.getControl().getLogs().info("(SuperHolograms System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            return;
+        }
+        EntityArmorStand armorStand = hologramsID.get(holoPrivateID);
+        armorStand.setCustomName(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + holoLineText + "\"}"));
+        PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), true);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(metaPacket);
+    }
+    public void deleteHologram(Player player,String holoPrivateID) {
+        if(!hologramsID.containsKey(holoPrivateID)) return;
+        EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(armorStand.getId());
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 
     public void sendActionBar(Player player, String msg) {
