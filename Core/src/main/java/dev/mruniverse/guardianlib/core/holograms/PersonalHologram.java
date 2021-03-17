@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@SuppressWarnings("unused")
 public class PersonalHologram {
     private final HashMap<String, Hologram> listHolograms;
     private final Player player;
