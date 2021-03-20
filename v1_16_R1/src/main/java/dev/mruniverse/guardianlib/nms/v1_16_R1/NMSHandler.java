@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class NMSHandler implements NMS {
     private final HashMap<Player, EntityWither> bossBar = new HashMap<>();
@@ -40,7 +41,7 @@ public class NMSHandler implements NMS {
         }
     }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
-        EntityArmorStand armorStand = new EntityArmorStand((World)holoLocation.getWorld(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+        EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(holoLocation.getWorld())).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 
         armorStand.setNoGravity(true);
         armorStand.setCustomName(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + holoLineText + "\"}"));

@@ -62,7 +62,7 @@ public final class NMSHandler implements NMS {
     }
 
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
-        EntityArmorStand armorStand = new EntityArmorStand((World)holoLocation.getWorld(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+        EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld)holoLocation.getWorld()).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 
         armorStand.setNoGravity(true);
         armorStand.setCustomName(holoLineText);

@@ -40,18 +40,22 @@ public final class NMSHandler implements NMS {
         }
     }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
-        EntityArmorStand armorStand = new EntityArmorStand((World)holoLocation.getWorld(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+        try {
+            EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld)holoLocation.getWorld()).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 
-        armorStand.setGravity(false);
-        armorStand.setCustomName(holoLineText);
-        armorStand.setCustomNameVisible(true);
-        armorStand.setInvisible(true);
-        armorStand.setSmall(true);
-        armorStand.setBasePlate(false);
+            armorStand.setGravity(false);
+            armorStand.setCustomName(holoLineText);
+            armorStand.setCustomNameVisible(true);
+            armorStand.setInvisible(true);
+            armorStand.setSmall(true);
+            armorStand.setBasePlate(false);
 
-        PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
-        hologramsID.put(holoPrivateID,armorStand);
+            PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+            hologramsID.put(holoPrivateID, armorStand);
+        } catch (Throwable ignored) {
+            GuardianLIB.getControl().getLogs().error("Can't spawn hologram!");
+        }
     }
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
