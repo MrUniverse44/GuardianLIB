@@ -23,11 +23,11 @@ public final class GuardianLIB extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        logger = new Logger(this);
         hasPAPI = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
         utils = new Utils(this);
         slimeWorldManager = new SlimeWorldManagerAddon(this);
         worldManager = new WorldController(this);
-        logger = new Logger(this);
         fileStorage = new FileStorage(this);
         nmsSetup();
     }
