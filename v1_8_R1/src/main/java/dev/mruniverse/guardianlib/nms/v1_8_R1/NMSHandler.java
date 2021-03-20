@@ -1,6 +1,7 @@
 package dev.mruniverse.guardianlib.nms.v1_8_R1;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.*;
@@ -36,6 +37,26 @@ public final class NMSHandler implements NMS {
             PacketPlayOutTitle pTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, iComp);
             pConn.sendPacket(pTitle);
         }
+    }
+
+    public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
+        try {
+            WorldBorder worldBorder;
+            worldBorder = new WorldBorder();
+            worldBorder.world = ((CraftWorld)borderCenter.getWorld()).getHandle();
+            worldBorder.a(borderSize, borderSize, 0L);
+            worldBorder.c(borderCenter.getX(), borderCenter.getZ());
+            switch (borderColor) {
+                case GREEN:
+                    worldBorder.a(worldBorder.h() - 0.1D, worldBorder.h(), Long.MAX_VALUE);
+                    break;
+                case RED:
+                    worldBorder.a(worldBorder.h(), worldBorder.h() - 1.0D, Long.MAX_VALUE);
+                    break;
+            }
+            PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(worldBorder, EnumWorldBorderAction.INITIALIZE);
+            (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(packetPlayOutWorldBorder);
+        } catch (Throwable ignored) {}
     }
 
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {

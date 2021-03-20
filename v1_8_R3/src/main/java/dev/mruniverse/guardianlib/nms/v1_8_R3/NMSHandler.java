@@ -1,6 +1,7 @@
 package dev.mruniverse.guardianlib.nms.v1_8_R3;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.*;
@@ -55,6 +56,27 @@ public final class NMSHandler implements NMS {
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
     }
+
+    public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
+        try {
+            WorldBorder worldBorder;
+            worldBorder = new WorldBorder();
+            worldBorder.world = ((CraftWorld)borderCenter.getWorld()).getHandle();
+            worldBorder.setSize(borderSize);
+            worldBorder.setCenter(borderCenter.getX(),borderCenter.getZ());
+            switch (borderColor) {
+                case GREEN:
+                    worldBorder.transitionSizeBetween(worldBorder.getSize() - 0.1D, worldBorder.getSize(), Long.MAX_VALUE);
+                    break;
+                case RED:
+                    worldBorder.transitionSizeBetween(worldBorder.getSize(), worldBorder.getSize() - 1.0D, Long.MAX_VALUE);
+                    break;
+            }
+            PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(worldBorder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+            (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(packetPlayOutWorldBorder);
+        } catch (Throwable ignored) {}
+    }
+
     public void updateHologramText(Player player,String holoPrivateID,String holoLineText) {
         if(!hologramsID.containsKey(holoPrivateID)) {
             GuardianLIB.getControl().getLogs().info("(SuperHolograms System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");

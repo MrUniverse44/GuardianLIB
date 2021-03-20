@@ -1,6 +1,7 @@
 package dev.mruniverse.guardianlib.core.utils;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.enums.HologramType;
 import dev.mruniverse.guardianlib.core.utils.xseries.XEnchantment;
 import dev.mruniverse.guardianlib.core.utils.xseries.XMaterial;
@@ -45,6 +46,9 @@ public class Utils {
         if(message == null) message = "Unknown Message";
         message = ChatColor.translateAlternateColorCodes('&',message);
         sender.sendMessage(CenterText.sendToCenter(message));
+    }
+    public void setPlayerWorldBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
+        plugin.getNMS().playerBorder(player,borderCenter,borderSize,borderColor);
     }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
