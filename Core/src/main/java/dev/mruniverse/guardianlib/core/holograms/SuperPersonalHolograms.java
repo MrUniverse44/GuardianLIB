@@ -44,6 +44,14 @@ public class SuperPersonalHolograms {
         this.holoLines = Arrays.asList(lines);
         this.holoAS = new ArrayList<>();
     }
+    public SuperPersonalHolograms(GuardianLIB guardianLIB, Player player, Location location,String holoPrivateID, List<String> lines) {
+        this.guardianLIB = guardianLIB;
+        this.holoLocation = location;
+        this.holoPrivateID = holoPrivateID;
+        this.player = player;
+        this.holoLines = lines;
+        this.holoAS = new ArrayList<>();
+    }
     public void spawn() {
         int lineID = 0;
         for (String line : this.holoLines) {

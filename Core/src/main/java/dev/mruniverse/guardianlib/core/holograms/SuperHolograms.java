@@ -45,6 +45,11 @@ public class SuperHolograms {
         this.holoLines = Arrays.asList(lines);
         this.holoAS = new ArrayList<>();
     }
+    public SuperHolograms(Location location, List<String> lines) {
+        this.holoLocation = location;
+        this.holoLines = lines;
+        this.holoAS = new ArrayList<>();
+    }
 
     public void spawn() {
         int lineID = 0;
