@@ -9,15 +9,19 @@ import dev.mruniverse.guardianlib.core.GuardianLIB;
 import org.bukkit.Bukkit;
 
 public class SlimeWorldManagerAddon {
-    private final GuardianLIB plugin;
-    private final SlimePlugin slime;
-    private final SlimeLoader loader;
+    private GuardianLIB plugin;
+    private SlimePlugin slime;
+    private SlimeLoader loader;
 
     public SlimeWorldManagerAddon(GuardianLIB plugin) {
-        this.plugin = plugin;
-        this.slime = (SlimePlugin)Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
-        assert this.slime != null;
-        this.loader = this.slime.getLoader(plugin.getStorage().getConfig().getString("settings.SlimeWorld.loadType"));
+        if(Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
+            this.plugin = plugin;
+            this.slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+            assert this.slime != null;
+            this.loader = this.slime.getLoader(plugin.getStorage().getConfig().getString("settings.SlimeWorld.loadType"));
+        } else {
+            plugin.getLogs().error("The server doesn't have installed SlimeWorldManager, the plugin can give errors if an plugin uses the SlimeWorldManager API in GuardianLIB.");
+        }
     }
 
     public void createWorld(String worldName,String worldID) {
