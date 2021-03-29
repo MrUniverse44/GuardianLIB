@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import dev.mruniverse.guardianlib.core.GuardianLIB;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,6 +14,8 @@ import org.bukkit.entity.EntityType;
 @SuppressWarnings("unused")
 public class SuperHolograms {
     private Location holoLocation;
+
+    private final GuardianLIB guardianLIB = GuardianLIB.getControl();
 
     private List<String> holoLines;
 
@@ -60,6 +63,7 @@ public class SuperHolograms {
             holoLineLocation.setY(holoLineLocation.getY() - this.distance);
             ArmorStand as = addArmorStand(line, holoLineLocation);
             this.holoAS.add(as);
+            guardianLIB.armorStands.add(as);
             lineID++;
         }
     }
@@ -72,7 +76,9 @@ public class SuperHolograms {
         int size = this.holoLines.size();
         List<ArmorStand> removeAS = Lists.newArrayList(this.holoAS);
         for(int i = 0; i < size; i++) {
-            removeAS.get(i).remove();
+            ArmorStand armorStand = removeAS.get(i);
+            armorStand.remove();
+            guardianLIB.armorStands.remove(armorStand);
         }
         this.holoAS = new ArrayList<>();
         this.holoLines = new ArrayList<>();

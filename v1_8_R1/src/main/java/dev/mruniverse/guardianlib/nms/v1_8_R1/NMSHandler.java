@@ -2,9 +2,15 @@ package dev.mruniverse.guardianlib.nms.v1_8_R1;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.enums.BorderColor;
+import dev.mruniverse.guardianlib.core.enums.InteractType;
+import dev.mruniverse.guardianlib.core.events.HologramInteractEvent;
 import dev.mruniverse.guardianlib.core.nms.NMS;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
@@ -12,9 +18,12 @@ import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import io.netty.channel.Channel;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class NMSHandler implements NMS {
     private final HashMap<Player,EntityWither> bossBar = new HashMap<>();
@@ -57,6 +66,53 @@ public final class NMSHandler implements NMS {
             PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(worldBorder, EnumWorldBorderAction.INITIALIZE);
             (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(packetPlayOutWorldBorder);
         } catch (Throwable ignored) {}
+    }
+    public void injectPlayer(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            @Override
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
+                if(packet instanceof PacketPlayInUseEntity) {
+                    try {
+                        PacketPlayInUseEntity pack = (PacketPlayInUseEntity) packet;
+                        readPacket(pack,player);
+                    }
+                    catch (Throwable ignored) { }
+                }
+                try {
+                    super.channelRead(channelHandlerContext, packet);
+                } catch (Throwable ignored) { }
+            }
+        };
+        try {
+            PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
+            Channel channel = ((Channel)getValue(connection.networkManager,"channel"));
+            ChannelPipeline pipeline = channel.pipeline();
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        }catch (Throwable ignored) { }
+    }
+    public void readPacket(Packet packet,Player player) {
+        if(packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {
+            int id = (int) getValue(packet, "a");
+            if(getValue(packet, "action").toString().equalsIgnoreCase("interact")) {
+                for(Map.Entry<String,EntityArmorStand> entry : hologramsID.entrySet()) {
+                    EntityArmorStand armor = entry.getValue();
+                    if(armor.getId() == id) {
+                        Bukkit.getPluginManager().callEvent(new HologramInteractEvent(entry.getKey(),id,player, InteractType.INTERACT));
+                    }
+                }
+            }
+        }
+    }
+
+    private Object getValue(Object instance, String name) {
+        Object result = null;
+        try {
+            Field field = instance.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            result = field.get(instance);
+            field.setAccessible(false);
+        } catch(Throwable ignored) { }
+        return result;
     }
 
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {

@@ -42,6 +42,9 @@ public final class NMSHandler implements NMS {
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
     }
+    public void injectPlayer(Player player) {
+
+    }
     public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
         try {
             WorldBorder worldBorder;

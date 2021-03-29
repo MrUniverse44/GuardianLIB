@@ -18,6 +18,7 @@ public interface NMS {
     void updateHologramText(Player player,String holoPrivateID,String holoLineText);
     void deleteHologram(Player player,String holoPrivateID);
     void deleteBossBar(Player player);
+    void injectPlayer(Player player);
     Location getHologramLocation(String holoPrivateID);
     boolean BossHasPlayer(Player player);
     ItemStack getItemStack(Material material, String itemName, List<String> lore);

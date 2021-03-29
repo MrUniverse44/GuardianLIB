@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.mruniverse.guardianlib</groupId>
         <artifactId>GuardianLIB-Parent</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
     <build>
         <plugins>
@@ -26,6 +26,11 @@
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>latest</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -39,6 +44,10 @@
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>fawe-repo</id>
+            <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
         </repository>
     </repositories>
 </project>

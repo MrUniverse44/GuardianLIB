@@ -64,7 +64,9 @@ public final class NMSHandler implements NMS {
             (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(packetPlayOutWorldBorder);
         } catch (Throwable ignored) {}
     }
+    public void injectPlayer(Player player) {
 
+    }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
         EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(holoLocation.getWorld())).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 

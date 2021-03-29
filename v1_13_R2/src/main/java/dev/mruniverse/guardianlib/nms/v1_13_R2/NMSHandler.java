@@ -139,6 +139,10 @@ public final class NMSHandler implements NMS {
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 
+    public void injectPlayer(Player player) {
+
+    }
+
     public ItemStack getItemStack(Material material, String itemName, List<String> lore) {
         ItemStack addItem = new ItemStack(material, 1);
         ItemMeta addItemMeta = addItem.getItemMeta();

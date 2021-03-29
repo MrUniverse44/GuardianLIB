@@ -134,6 +134,11 @@ public final class NMSHandler implements NMS {
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(wither.getId());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
+
+    public void injectPlayer(Player player) {
+
+    }
+
     public boolean BossHasPlayer(Player player) {
         return bossBar.containsKey(player);
     }

@@ -9,6 +9,13 @@ Features:
 * World System (With SlimeWorldGenerator)
 * ActionBar,Title & Subtitle, Sounds, Text Utilities, BossBar System, Simple Logger System
 * PlaceholderAPI Support
+* WorldEdit System (With FastAsyncWorldEdit Support)
+* Touchable Holograms
+
+
+Working now:
+* NPC System with NPC Event
+* Scoreboard System
 
 Java Docs:
 * Coming Soon.
@@ -28,7 +35,7 @@ Dependency:
             <artifactId>GuardianLIB</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
             -->
         </dependency>
 ```

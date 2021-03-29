@@ -39,6 +39,9 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+    public void injectPlayer(Player player) {
+
+    }
     public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
         try {
             WorldBorder worldBorder;
