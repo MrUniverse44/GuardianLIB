@@ -43,7 +43,11 @@ public final class GuardianLIB extends JavaPlugin {
         utils = new Utils(this);
         hologramsLoaded = 0;
         slimeWorldManager = new SlimeWorldManagerAddon(this);
-        schematicManager = new SchematicManager(this);
+        if(getServer().getPluginManager().isPluginEnabled("WorldEdit") || hasFAWE) {
+            schematicManager = new SchematicManager(this);
+        } else {
+            logger.info("Schematics System disabled: &aNo World Edit plugin found &e& &aNo FAWE plugin found&e.");
+        }
         worldManager = new WorldController(this);
         fileStorage = new FileStorage(this);
         getServer().getPluginManager().registerEvents(new JoinListener(this),this);
