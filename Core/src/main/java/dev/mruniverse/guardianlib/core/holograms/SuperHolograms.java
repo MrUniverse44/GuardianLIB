@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianlib.core.holograms;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SuperHolograms {
     private List<String> holoLines;
 
     private List<ArmorStand> holoAS;
+
+    private int guardianPrivateID;
 
     public void setLocation(Location holoLocation) {
         this.holoLocation = holoLocation;
@@ -47,11 +50,15 @@ public class SuperHolograms {
         this.holoLocation = location;
         this.holoLines = Arrays.asList(lines);
         this.holoAS = new ArrayList<>();
+        guardianPrivateID = guardianLIB.getHologramsLoaded() + 1;
+        guardianLIB.setHologramsLoaded(guardianLIB.getHologramsLoaded() + 1);
     }
     public SuperHolograms(Location location, List<String> lines) {
         this.holoLocation = location;
         this.holoLines = lines;
         this.holoAS = new ArrayList<>();
+        guardianPrivateID = guardianLIB.getHologramsLoaded() + 1;
+        guardianLIB.setHologramsLoaded(guardianLIB.getHologramsLoaded() + 1);
     }
 
     public void spawn() {
@@ -63,13 +70,14 @@ public class SuperHolograms {
             holoLineLocation.setY(holoLineLocation.getY() - this.distance);
             ArmorStand as = addArmorStand(line, holoLineLocation);
             this.holoAS.add(as);
-            guardianLIB.armorStands.add(as);
             lineID++;
         }
+        guardianLIB.armorStands.put(guardianPrivateID,holoAS);
     }
 
     public void update() {
         for (int i = 0; i < this.holoLines.size(); i++) this.holoAS.get(i).setCustomName(this.holoLines.get(i));
+        guardianLIB.armorStands.put(guardianPrivateID,holoAS);
     }
 
     public void remove() {
@@ -78,8 +86,8 @@ public class SuperHolograms {
         for(int i = 0; i < size; i++) {
             ArmorStand armorStand = removeAS.get(i);
             armorStand.remove();
-            guardianLIB.armorStands.remove(armorStand);
         }
+        guardianLIB.armorStands.put(guardianPrivateID,new ArrayList<ArmorStand>());
         this.holoAS = new ArrayList<>();
         this.holoLines = new ArrayList<>();
     }

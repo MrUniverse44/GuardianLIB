@@ -2,6 +2,7 @@ package dev.mruniverse.guardianlib.core;
 
 import dev.mruniverse.guardianlib.core.enums.NMSenum;
 import dev.mruniverse.guardianlib.core.files.FileStorage;
+import dev.mruniverse.guardianlib.core.listeners.HoloListener;
 import dev.mruniverse.guardianlib.core.listeners.JoinListener;
 import dev.mruniverse.guardianlib.core.nms.NMS;
 import dev.mruniverse.guardianlib.core.schematics.SchematicManager;
@@ -13,8 +14,9 @@ import dev.mruniverse.guardianlib.core.utils.world.WorldController;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public final class GuardianLIB extends JavaPlugin {
@@ -23,7 +25,7 @@ public final class GuardianLIB extends JavaPlugin {
     private SlimeWorldManagerAddon slimeWorldManager;
     private WorldController worldManager;
     private boolean hasPAPI = false;
-    public List<ArmorStand> armorStands;
+    public HashMap<Integer, List<ArmorStand>> armorStands;
     private boolean hasFAWE = false;
     private SchematicManager schematicManager;
     private FileStorage fileStorage;
@@ -34,7 +36,7 @@ public final class GuardianLIB extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        armorStands = new ArrayList<>();
+        armorStands = new HashMap<>();
         logger = new Logger(this);
         hasPAPI = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
         hasFAWE = getServer().getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
@@ -45,14 +47,24 @@ public final class GuardianLIB extends JavaPlugin {
         worldManager = new WorldController(this);
         fileStorage = new FileStorage(this);
         getServer().getPluginManager().registerEvents(new JoinListener(this),this);
+        getServer().getPluginManager().registerEvents(new HoloListener(this),this);
         nmsSetup();
     }
 
     @Override
     public void onDisable() {
-        for(ArmorStand armorStand : armorStands) {
-            armorStand.remove();
+        for(Map.Entry<Integer,List<ArmorStand>> entry : armorStands.entrySet()) {
+            unloadArmor(entry.getValue());
+            logger.info("Unloading holograms from ID: " + entry.getKey());
         }
+    }
+    private void unloadArmor(List<ArmorStand> armors) {
+        for(ArmorStand armor : armors) {
+            armor.remove();
+        }
+    }
+    public HashMap<Integer,List<ArmorStand>> getArmorStandsUsingPrivateID() {
+        return armorStands;
     }
     private void nmsSetup() {
         try {
