@@ -29,7 +29,7 @@ public class HoloListener implements Listener {
         if(entityType == EntityType.ARMOR_STAND) {
             for(Map.Entry<Integer,List<ArmorStand>> entry : plugin.getArmorStandsUsingPrivateID().entrySet()) {
                 if(checkArmor(entity.getUniqueId(),entry.getValue())) {
-                    Bukkit.getPluginManager().callEvent(new HologramInteractEvent("SH-" + entry.getKey(),0,player, InteractType.INTERACT_AT));
+                    Bukkit.getPluginManager().callEvent(new HologramInteractEvent("GH-" + entry.getKey(),0,player, InteractType.INTERACT_AT));
                     e.setCancelled(true);
                     return;
                 }

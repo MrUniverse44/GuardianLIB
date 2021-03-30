@@ -55,7 +55,7 @@ public final class NMSHandler implements NMS {
     }
     public void updateHologramText(Player player,String holoPrivateID,String holoLineText) {
         if(!hologramsID.containsKey(holoPrivateID)) {
-            GuardianLIB.getControl().getLogs().info("(SuperHolograms System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            GuardianLIB.getControl().getLogs().info("(GlobalHologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
             return;
         }
         EntityArmorStand armorStand = hologramsID.get(holoPrivateID);

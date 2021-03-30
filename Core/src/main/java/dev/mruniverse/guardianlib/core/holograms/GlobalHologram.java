@@ -1,6 +1,5 @@
 package dev.mruniverse.guardianlib.core.holograms;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 @SuppressWarnings("unused")
-public class SuperHolograms {
+public class GlobalHologram {
     private Location holoLocation;
 
     private final GuardianLIB guardianLIB = GuardianLIB.getControl();
@@ -22,7 +21,9 @@ public class SuperHolograms {
 
     private List<ArmorStand> holoAS;
 
-    private int guardianPrivateID;
+    private final int guardianPrivateID;
+
+    private final String guardianID;
 
     public void setLocation(Location holoLocation) {
         this.holoLocation = holoLocation;
@@ -46,19 +47,21 @@ public class SuperHolograms {
         return this.distance;
     }
 
-    public SuperHolograms(Location location, String[] lines) {
+    public GlobalHologram(Location location, String[] lines) {
         this.holoLocation = location;
         this.holoLines = Arrays.asList(lines);
         this.holoAS = new ArrayList<>();
         guardianPrivateID = guardianLIB.getHologramsLoaded() + 1;
         guardianLIB.setHologramsLoaded(guardianLIB.getHologramsLoaded() + 1);
+        guardianID = "GH-" + guardianPrivateID;
     }
-    public SuperHolograms(Location location, List<String> lines) {
+    public GlobalHologram(Location location, List<String> lines) {
         this.holoLocation = location;
         this.holoLines = lines;
         this.holoAS = new ArrayList<>();
         guardianPrivateID = guardianLIB.getHologramsLoaded() + 1;
         guardianLIB.setHologramsLoaded(guardianLIB.getHologramsLoaded() + 1);
+        guardianID = "GH-" + guardianPrivateID;
     }
 
     public void spawn() {
@@ -74,7 +77,9 @@ public class SuperHolograms {
         }
         guardianLIB.armorStands.put(guardianPrivateID,holoAS);
     }
-
+    public String getGuardianID() {
+        return guardianID;
+    }
     public void update() {
         for (int i = 0; i < this.holoLines.size(); i++) this.holoAS.get(i).setCustomName(this.holoLines.get(i));
         guardianLIB.armorStands.put(guardianPrivateID,holoAS);
@@ -87,7 +92,7 @@ public class SuperHolograms {
             ArmorStand armorStand = removeAS.get(i);
             armorStand.remove();
         }
-        guardianLIB.armorStands.put(guardianPrivateID,new ArrayList<ArmorStand>());
+        guardianLIB.armorStands.put(guardianPrivateID, new ArrayList<>());
         this.holoAS = new ArrayList<>();
         this.holoLines = new ArrayList<>();
     }

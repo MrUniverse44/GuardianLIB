@@ -55,7 +55,7 @@ public final class GuardianLIB extends JavaPlugin {
     public void onDisable() {
         for(Map.Entry<Integer,List<ArmorStand>> entry : armorStands.entrySet()) {
             unloadArmor(entry.getValue());
-            logger.info("Unloading holograms from ID: " + entry.getKey());
+            logger.info("Unloading global-holograms from ID: GH-" + entry.getKey());
         }
     }
     private void unloadArmor(List<ArmorStand> armors) {

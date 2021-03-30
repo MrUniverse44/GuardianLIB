@@ -179,20 +179,15 @@ public class Utils {
     }
     public HologramType getHoloTypeByString(String text) {
         switch (text.toLowerCase()){
-            case "sh":
-            case "superhologram":
-            case "superholograms":
-                return HologramType.SuperHolograms;
+            case "gh":
+            case "globalhologram":
+            case "globalholograms":
+            default:
+                return HologramType.GlobalHolograms;
             case "ph":
             case "personalhologram":
             case "personalholograms":
                 return HologramType.PersonalHolograms;
-            case "sph":
-            case "superpersonalhologram":
-            case "superpersonalholograms":
-                return HologramType.SuperPersonalHolograms;
-            default:
-                return HologramType.Holograms;
         }
     }
     @SuppressWarnings("ConstantConditions")

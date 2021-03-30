@@ -1,8 +1,6 @@
 package dev.mruniverse.guardianlib.core.enums;
 
 public enum HologramType {
-    Holograms,
+    GlobalHolograms,
     PersonalHolograms,
-    SuperHolograms,
-    SuperPersonalHolograms
 }

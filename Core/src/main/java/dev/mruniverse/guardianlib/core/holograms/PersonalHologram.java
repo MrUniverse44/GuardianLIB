@@ -1,122 +1,94 @@
 package dev.mruniverse.guardianlib.core.holograms;
 
-import dev.mruniverse.guardianlib.core.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import dev.mruniverse.guardianlib.core.GuardianLIB;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 @SuppressWarnings("unused")
 public class PersonalHologram {
-    private final HashMap<String, Hologram> listHolograms;
+    private final GuardianLIB guardianLIB;
+    private final String holoPrivateID;
     private final Player player;
-    private final JavaPlugin plugin;
-    private final HashMap<String, List<String>> holoLines;
+    private final List<String> holoAS;
+    private Location holoLocation;
 
+    private List<String> holoLines;
 
-    public PersonalHologram(JavaPlugin plugin, Player player) {
-        this.listHolograms = new HashMap<>();
+    public void setLocation(Location holoLocation) {
+        this.holoLocation = holoLocation;
+    }
+
+    public void setLines(List<String> holoLines) {
+        this.holoLines = holoLines;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    private double distance = 0.3D;
+
+    public double getDistance() {
+        return this.distance;
+    }
+
+    public PersonalHologram(GuardianLIB guardianLIB, Player player, Location location, String holoPrivateID, String[] lines) {
+        this.guardianLIB = guardianLIB;
+        this.holoLocation = location;
+        this.holoPrivateID = holoPrivateID;
         this.player = player;
-        this.plugin = plugin;
-        this.holoLines = new HashMap<>();
+        this.holoLines = Arrays.asList(lines);
+        this.holoAS = new ArrayList<>();
     }
-
-    public void createHologram(String holoName,Location holoLocation, String[] holoLines) {
-        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"))
-            return;
-        if (listHolograms.containsKey(holoName)) {
-            listHolograms.get(holoName).delete();
-            listHolograms.remove(holoName);
-            this.holoLines.remove(holoName);
-        }
-        if (holoLocation == null) return;
-        if (holoName == null || holoLines == null) return;
-        holoLocation.add(0.0D, 3.5D, 0.0D);
-        Hologram hologram = HologramsAPI.createHologram(plugin, holoLocation);
-        List<String> lines = Utils.recolorLore(Arrays.asList(holoLines));
-        VisibilityManager visibility = hologram.getVisibilityManager();
-        visibility.setVisibleByDefault(false);
-        this.holoLines.put(holoName,lines);
-        holoAppend(hologram,lines);
-        visibility.showTo(player);
-        this.listHolograms.put(holoName, hologram);
+    public PersonalHologram(GuardianLIB guardianLIB, Player player, Location location, String holoPrivateID, List<String> lines) {
+        this.guardianLIB = guardianLIB;
+        this.holoLocation = location;
+        this.holoPrivateID = holoPrivateID;
+        this.player = player;
+        this.holoLines = lines;
+        this.holoAS = new ArrayList<>();
     }
-
-    public void updateLines(String holoName,String[] holoLines) {
-        Hologram hologram = this.listHolograms.get(holoName);
-        hologram.clearLines();
-        List<String> lines = Utils.recolorLore(Arrays.asList(holoLines));
-        this.holoLines.put(holoName,lines);
-        holoAppend(hologram,lines);
-        VisibilityManager visibilityManager = hologram.getVisibilityManager();
-        visibilityManager.resetVisibility(player);
-        visibilityManager.showTo(player);
-    }
-
-    public void updateLine(String holoName,int line,String text) {
-        Hologram hologram = this.listHolograms.get(holoName);
-        text = color(text.replace("%online%",Bukkit.getOnlinePlayers().size() + "")
-                .replace("%max%",Bukkit.getMaxPlayers() + ""));
-        hologram.insertTextLine(line,text);
-        hologram.removeLine(line+1);
-        List<String> lines = holoLines.get(holoName);
-        lines.set(line-1,text);
-        holoLines.put(holoName,lines);
-        VisibilityManager visibilityManager = hologram.getVisibilityManager();
-        visibilityManager.resetVisibility(player);
-        visibilityManager.showTo(player);
-    }
-
-    public void reloadHologram(String holoName) {
-        Hologram hologram = this.listHolograms.get(holoName);
-        hologram.clearLines();
-        List<String> lines = this.holoLines.get(holoName);
-        holoAppend(hologram,lines);
-        VisibilityManager visibilityManager = hologram.getVisibilityManager();
-        visibilityManager.resetVisibility(player);
-        visibilityManager.showTo(player);
-    }
-
-    public void reloadHolograms() {
-        for (String holoName : this.listHolograms.keySet()) {
-            Hologram hologram = this.listHolograms.get(holoName);
-            hologram.clearLines();
-            List<String> lines = this.holoLines.get(holoName);
-            holoAppend(hologram,lines);
-            VisibilityManager visibilityManager = hologram.getVisibilityManager();
-            visibilityManager.resetVisibility(player);
-            visibilityManager.showTo(player);
-        }
-    }
-    public void holoAppend(Hologram hologram,List<String> lines) {
-        for(String line : lines) {
-            line = color(line.replace("%online%",Bukkit.getOnlinePlayers().size() + "")
-                    .replace("%max%",Bukkit.getMaxPlayers() + ""));
-            hologram.appendTextLine(line);
-        }
-    }
-    public void deleteHolograms() {
-        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"))
-            return;
-        for (Map.Entry<String,Hologram> entry : listHolograms.entrySet()) {
-            entry.getValue().delete();
+    public void spawn() {
+        int lineID = 0;
+        for (String line : this.holoLines) {
+            Location holoLineLocation = this.holoLocation.clone();
+            holoLineLocation.setY(this.holoLocation.getY() + this.distance * this.holoLines.size());
+            if (lineID > 0) holoLineLocation = guardianLIB.getNMS().getHologramLocation(holoPrivateID + "-" + (lineID - 1));
+            holoLineLocation.setY(holoLineLocation.getY() - this.distance);
+            guardianLIB.getNMS().spawnHologram(this.player,holoPrivateID + "-" + lineID,line,holoLineLocation);
+            holoAS.add(holoPrivateID + "-" + lineID);
+            lineID++;
         }
     }
 
-    private String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
+    public void update() {
+        for (int i = 0; i < this.holoLines.size(); i++) {
+            guardianLIB.getNMS().updateHologramText(this.player,holoPrivateID + "-" + i,this.holoLines.get(i));
+        }
     }
 
-    public Player getPlayers() {
-        return player;
+    public void delete() {
+        for (int i = 0; i < this.holoLines.size(); i++) {
+            guardianLIB.getNMS().deleteHologram(this.player,holoPrivateID + "-" + i);
+        }
     }
+
+    public Player getPlayer() { return this.player; }
+
+    public Location getLocation() {
+        return this.holoLocation;
+    }
+
+    public List<String> getLines() {
+        return this.holoLines;
+    }
+
+    public List<String> getArmorStands() {
+        return this.holoAS;
+    }
+
 }
-
