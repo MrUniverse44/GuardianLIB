@@ -35,7 +35,7 @@ Dependency:
             <artifactId>GuardianLIB</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.6.1-SNAPSHOT</version>
+            <version>1.0.7-SNAPSHOT</version>
             -->
         </dependency>
 ```
