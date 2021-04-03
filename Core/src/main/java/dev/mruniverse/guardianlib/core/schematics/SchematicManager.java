@@ -1,6 +1,7 @@
 package dev.mruniverse.guardianlib.core.schematics;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
+import dev.mruniverse.guardianlib.core.enums.NMSenum;
 import org.bukkit.Location;
 
 import java.io.File;
@@ -8,24 +9,27 @@ import java.io.File;
 public class SchematicManager {
     private final GuardianLIB plugin;
     private FAWEController faweController;
-    private WEController weController;
+    private WorldEditController worldEditController;
     public SchematicManager(GuardianLIB plugin,boolean load) {
         this.plugin = plugin;
 
         if(load) {
             faweController = new FAWEController();
-            weController = new WEController();
+            worldEditController = new WEController();
             return;
         }
         faweController = null;
-        weController = null;
+        worldEditController = null;
     }
     public void loadAgain() {
         faweController = new FAWEController();
-        weController = new WEController();
+        if(NMSenum.isBetween(NMSenum.v1_8_R1,NMSenum.v1_12_R1)) {
+            worldEditController = new WEController();
+            return;
+        }
     }
     public void pasteSchematic(File Schematic, Location location) {
-        if(faweController == null && weController == null) {
+        if(faweController == null && worldEditController == null) {
             plugin.getLogs().error("This server doesn't have installed WorldEdit plugins.");
             return;
         }
@@ -33,12 +37,12 @@ public class SchematicManager {
             faweController.pasteSchematic(Schematic, location);
             return;
         }
-        weController.pasteSchematic(Schematic,location);
+        worldEditController.pasteSchematic(Schematic,location);
     }
     public FAWEController getFAWE() {
         return faweController;
     }
-    public WEController getWE() {
-        return weController;
+    public WorldEditController getWE() {
+        return worldEditController;
     }
 }

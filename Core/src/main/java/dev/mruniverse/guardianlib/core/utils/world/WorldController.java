@@ -32,6 +32,7 @@ public class WorldController {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void loadWorld(String arena) {
         if ((new File(this.main.getDataFolder(), arena)).exists()) {
             File f = new File(Bukkit.getWorldContainer(), arena);
