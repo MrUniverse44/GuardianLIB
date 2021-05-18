@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.mruniverse.guardianlib</groupId>
     <artifactId>GuardianLIB-Parent</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>GuardianLIB</name>
     <description>GuardianLIB is a library from Darkness Development</description>

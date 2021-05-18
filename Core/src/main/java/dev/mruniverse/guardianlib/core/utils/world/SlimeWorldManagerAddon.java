@@ -41,6 +41,10 @@ public class SlimeWorldManagerAddon {
         }
     }
 
+    public void saveWorld(String worldName,String worldID) {
+
+    }
+
     public void unloadworld(String name) {
         Bukkit.unloadWorld(name, false);
     }

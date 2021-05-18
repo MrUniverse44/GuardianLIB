@@ -157,6 +157,6 @@ public class CenterText {
             sb.append(" ");
             j += n4;
         }
-        return sb.toString() + replace;
+        return sb + replace;
     }
 }

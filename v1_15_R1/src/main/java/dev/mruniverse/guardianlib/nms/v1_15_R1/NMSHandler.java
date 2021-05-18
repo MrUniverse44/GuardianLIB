@@ -2,9 +2,16 @@ package dev.mruniverse.guardianlib.nms.v1_15_R1;
 
 import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.enums.BorderColor;
+import dev.mruniverse.guardianlib.core.enums.InteractType;
+import dev.mruniverse.guardianlib.core.events.HologramInteractEvent;
 import dev.mruniverse.guardianlib.core.nms.NMS;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_15_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
@@ -14,8 +21,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class NMSHandler implements NMS {
@@ -41,7 +50,52 @@ public final class NMSHandler implements NMS {
         }
     }
     public void injectPlayer(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            @Override
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
+                if(packet instanceof PacketPlayInUseEntity) {
+                    try {
+                        PacketPlayInUseEntity pack = (PacketPlayInUseEntity) packet;
+                        readPacket(pack,player);
+                    }
+                    catch (Throwable ignored) { }
+                }
+                try {
+                    super.channelRead(channelHandlerContext, packet);
+                } catch (Throwable ignored) { }
+            }
+        };
+        try {
+            PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
+            Channel channel = ((Channel)getValue(connection.networkManager,"channel"));
+            ChannelPipeline pipeline = channel.pipeline();
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        }catch (Throwable ignored) { }
+    }
+    @SuppressWarnings("rawtypes")
+    public void readPacket(Packet packet, Player player) {
+        if(packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {
+            int id = (int) getValue(packet, "a");
+            if(getValue(packet, "action").toString().equalsIgnoreCase("interact")) {
+                for(Map.Entry<String,EntityArmorStand> entry : hologramsID.entrySet()) {
+                    EntityArmorStand armor = entry.getValue();
+                    if(armor.getId() == id) {
+                        Bukkit.getPluginManager().callEvent(new HologramInteractEvent(entry.getKey(),id,player, InteractType.INTERACT));
+                    }
+                }
+            }
+        }
+    }
 
+    private Object getValue(Object instance, String name) {
+        Object result = null;
+        try {
+            Field field = instance.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            result = field.get(instance);
+            field.setAccessible(false);
+        } catch(Throwable ignored) { }
+        return result;
     }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
         EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(holoLocation.getWorld())).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
@@ -55,6 +109,24 @@ public final class NMSHandler implements NMS {
 
         PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+        hologramsID.put(holoPrivateID,armorStand);
+    }
+    public void spawnHologram(List<Player> players,String holoPrivateID,String holoLineText,Location holoLocation) {
+        EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(holoLocation.getWorld())).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+
+        armorStand.setNoGravity(true);
+        armorStand.setCustomName(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + holoLineText + "\"}"));
+        armorStand.setCustomNameVisible(true);
+        armorStand.setInvisible(true);
+        armorStand.setSmall(true);
+        armorStand.setBasePlate(false);
+
+        PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+            }catch (Throwable ignored) {}
+        }
         hologramsID.put(holoPrivateID,armorStand);
     }
     public Location getHologramLocation(String holoPrivateID) {
@@ -84,7 +156,7 @@ public final class NMSHandler implements NMS {
 
     public void updateHologramText(Player player,String holoPrivateID,String holoLineText) {
         if(!hologramsID.containsKey(holoPrivateID)) {
-            GuardianLIB.getControl().getLogs().info("(GlobalHologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            GuardianLIB.getControl().getLogs().info("(Hologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
             return;
         }
         EntityArmorStand armorStand = hologramsID.get(holoPrivateID);
@@ -92,11 +164,35 @@ public final class NMSHandler implements NMS {
         PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), true);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(metaPacket);
     }
+    public void updateHologramText(List<Player> players,String holoPrivateID,String holoLineText) {
+        if(!hologramsID.containsKey(holoPrivateID)) {
+            GuardianLIB.getControl().getLogs().info("(Hologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            return;
+        }
+        EntityArmorStand armorStand = hologramsID.get(holoPrivateID);
+        armorStand.setCustomName(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + holoLineText + "\"}"));
+        PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), true);
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(metaPacket);
+            }catch (Throwable ignored) {}
+        }
+    }
     public void deleteHologram(Player player,String holoPrivateID) {
         if(!hologramsID.containsKey(holoPrivateID)) return;
         EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(armorStand.getId());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    public void deleteHologram(List<Player> players,String holoPrivateID) {
+        if(!hologramsID.containsKey(holoPrivateID)) return;
+        EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(armorStand.getId());
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            }catch (Throwable ignored) {}
+        }
     }
 
     public void sendActionBar(Player player, String msg) {

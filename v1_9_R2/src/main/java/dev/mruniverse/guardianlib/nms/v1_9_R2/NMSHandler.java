@@ -62,6 +62,24 @@ public final class NMSHandler implements NMS {
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
         hologramsID.put(holoPrivateID,armorStand);
     }
+    public void spawnHologram(List<Player> players,String holoPrivateID,String holoLineText,Location holoLocation) {
+        EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld)holoLocation.getWorld()).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
+
+        armorStand.setGravity(false);
+        armorStand.setCustomName(holoLineText);
+        armorStand.setCustomNameVisible(true);
+        armorStand.setInvisible(true);
+        armorStand.setSmall(true);
+        armorStand.setBasePlate(false);
+
+        PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(armorStand);
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+            }catch (Throwable ignored) {}
+        }
+        hologramsID.put(holoPrivateID,armorStand);
+    }
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
     }
@@ -87,7 +105,7 @@ public final class NMSHandler implements NMS {
 
     public void updateHologramText(Player player,String holoPrivateID,String holoLineText) {
         if(!hologramsID.containsKey(holoPrivateID)) {
-            GuardianLIB.getControl().getLogs().info("(GlobalHologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            GuardianLIB.getControl().getLogs().info("(Hologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
             return;
         }
         EntityArmorStand armorStand = hologramsID.get(holoPrivateID);
@@ -95,11 +113,35 @@ public final class NMSHandler implements NMS {
         PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), true);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(metaPacket);
     }
+    public void updateHologramText(List<Player> players,String holoPrivateID,String holoLineText) {
+        if(!hologramsID.containsKey(holoPrivateID)) {
+            GuardianLIB.getControl().getLogs().info("(Hologram System) HoloPrivateID: " + holoPrivateID + " doesn't exists.");
+            return;
+        }
+        EntityArmorStand armorStand = hologramsID.get(holoPrivateID);
+        armorStand.setCustomName(holoLineText);
+        PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), true);
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(metaPacket);
+            }catch (Throwable ignored) {}
+        }
+    }
     public void deleteHologram(Player player,String holoPrivateID) {
         if(!hologramsID.containsKey(holoPrivateID)) return;
         EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(armorStand.getId());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    public void deleteHologram(List<Player> players,String holoPrivateID) {
+        if(!hologramsID.containsKey(holoPrivateID)) return;
+        EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(armorStand.getId());
+        for(Player player : players) {
+            try {
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            }catch (Throwable ignored) {}
+        }
     }
 
     public void sendActionBar(Player player, String msg) {

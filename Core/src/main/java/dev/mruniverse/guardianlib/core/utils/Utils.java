@@ -184,6 +184,10 @@ public class Utils {
             case "globalholograms":
             default:
                 return HologramType.GlobalHolograms;
+            case "phl":
+            case "packethologram":
+            case "packetholograms":
+                return HologramType.PacketHolograms;
             case "ph":
             case "personalhologram":
             case "personalholograms":

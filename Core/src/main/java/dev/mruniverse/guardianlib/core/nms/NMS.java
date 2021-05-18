@@ -15,8 +15,11 @@ public interface NMS {
     void sendBossBar(Player player, String message);
     void sendBossBar(Player player, String message,float percentage);
     void spawnHologram(Player player, String holoPrivateID, String holoLineText, Location holoLocation);
-    void updateHologramText(Player player,String holoPrivateID,String holoLineText);
+    void spawnHologram(List<Player> players, String holoPrivateID, String holoLineText, Location holoLocation);
+    void updateHologramText(Player player,String holoPrivateID, String holoLineText);
+    void updateHologramText(List<Player> players, String holoPrivateID, String holoLineText);
     void deleteHologram(Player player,String holoPrivateID);
+    void deleteHologram(List<Player> players,String holoPrivateID);
     void deleteBossBar(Player player);
     void injectPlayer(Player player);
     Location getHologramLocation(String holoPrivateID);

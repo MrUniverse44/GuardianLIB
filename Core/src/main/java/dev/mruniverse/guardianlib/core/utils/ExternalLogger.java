@@ -10,14 +10,39 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ExternalLogger {
     private final JavaPlugin plugin;
-    private final String pluginName;
     private final String hidePackage;
-    //hide package example: dev.mruniverse.guardianrftb.
+    private String pluginName = "GuardianLIB";
+    private String containIdentifier = "mruniverse";
+
+    /**
+     * Call the External Logger
+     *
+     * @param plugin this is your main class.
+     * @param pluginName this is the name of your plugin.
+     * @param hidePackage hide package example: dev.mruniverse.guardianrftb.
+     */
     public ExternalLogger(JavaPlugin plugin,String pluginName,String hidePackage) {
         this.plugin = plugin;
         this.hidePackage = hidePackage;
-        this.pluginName = pluginName;
+        if(pluginName != null) this.pluginName = pluginName;
     }
+
+    /**
+     * Call the External Logger
+     *
+     * @param plugin this is your main class.
+     * @param pluginName this is the name of your plugin.
+     * @param hidePackage hide package example: dev.mruniverse.guardianrftb.
+     * @param containIdentifier when a package contain this word this package will show in Internal - StackTrace
+     */
+    public ExternalLogger(JavaPlugin plugin,String pluginName,String hidePackage, String containIdentifier) {
+        this.plugin = plugin;
+        this.hidePackage = hidePackage;
+        if(pluginName != null) this.pluginName = pluginName;
+        if(containIdentifier == null) return;
+        this.containIdentifier = containIdentifier;
+    }
+
     /**
      * Colorize a string provided to method
      *
@@ -49,7 +74,7 @@ public class ExternalLogger {
             sendMessage("&f[&cERROR &7| &f" + pluginName + "] Internal - StackTrace: ");
             List<StackTraceElement> other = new ArrayList<>();
             for(StackTraceElement line : throwable.getStackTrace()) {
-                if(line.toString().contains("mruniverse")) {
+                if(line.toString().contains(containIdentifier)) {
                     sendMessage("&f[&cERROR &7| &f" + pluginName + "] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getFileName() + ":" + line.getLineNumber() + ")","").replace(hidePackage,""));
                 } else {
                     other.add(line);
