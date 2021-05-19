@@ -81,7 +81,7 @@ public final class GuardianLIB extends JavaPlugin {
         }
     }
 
-    public ExternalLogger initLogger(JavaPlugin plugin,String pluginName,String hidePackage) {
+    public static ExternalLogger initLogger(JavaPlugin plugin,String pluginName,String hidePackage) {
         return new ExternalLogger(plugin,pluginName,hidePackage);
     }
 
