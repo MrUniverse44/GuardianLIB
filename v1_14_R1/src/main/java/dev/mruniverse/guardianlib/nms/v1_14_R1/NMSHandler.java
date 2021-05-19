@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianlib.nms.v1_14_R1;
 
+import com.mojang.authlib.GameProfile;
 import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.enums.InteractType;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +85,123 @@ public final class NMSHandler implements NMS {
                         Bukkit.getPluginManager().callEvent(new HologramInteractEvent(entry.getKey(),id,player, InteractType.INTERACT));
                     }
                 }
+            }
+        }
+    }
+
+    public void resetName(Player player,List<Player> players) {
+        CraftPlayer craftPlayer = (CraftPlayer)player;
+        if(craftPlayer == null) return;
+        GameProfile gameProfile = craftPlayer.getProfile();
+        if(gameProfile == null) return;
+        for(Player currentPlayer : players) {
+            CraftPlayer currentCraftPlayer = (CraftPlayer) currentPlayer;
+            if (currentCraftPlayer != null) {
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle()));
+                try {
+                    Field nameField = GameProfile.class.getDeclaredField("name");
+                    nameField.setAccessible(true);
+
+                    Field modifiersField = Field.class.getDeclaredField("modifiers");
+                    modifiersField.setAccessible(true);
+                    modifiersField.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+
+                    nameField.set(gameProfile, player.getDisplayName());
+                } catch (Throwable throwable) {
+                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    GuardianLIB.getControl().getLogs().error(throwable);
+                    return;
+                }
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(player.getEntityId()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(craftPlayer.getHandle()));
+            }
+        }
+    }
+    public void resetName(Player player,Player[] players) {
+        CraftPlayer craftPlayer = (CraftPlayer)player;
+        if(craftPlayer == null) return;
+        GameProfile gameProfile = craftPlayer.getProfile();
+        if(gameProfile == null) return;
+        for(Player currentPlayer : players) {
+            CraftPlayer currentCraftPlayer = (CraftPlayer) currentPlayer;
+            if (currentCraftPlayer != null) {
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle()));
+                try {
+                    Field nameField = GameProfile.class.getDeclaredField("name");
+                    nameField.setAccessible(true);
+
+                    Field modifiersField = Field.class.getDeclaredField("modifiers");
+                    modifiersField.setAccessible(true);
+                    modifiersField.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+
+                    nameField.set(gameProfile, player.getDisplayName());
+                } catch (Throwable throwable) {
+                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    GuardianLIB.getControl().getLogs().error(throwable);
+                    return;
+                }
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(player.getEntityId()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(craftPlayer.getHandle()));
+            }
+        }
+    }
+    public void changeName(Player player,List<Player> players, String name){
+        CraftPlayer craftPlayer = (CraftPlayer)player;
+        if(craftPlayer == null) return;
+        GameProfile gameProfile = craftPlayer.getProfile();
+        if(gameProfile == null) return;
+        for(Player currentPlayer : players) {
+            CraftPlayer currentCraftPlayer = (CraftPlayer) currentPlayer;
+            if (currentCraftPlayer != null) {
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle()));
+                try {
+                    Field nameField = GameProfile.class.getDeclaredField("name");
+                    nameField.setAccessible(true);
+
+                    Field modifiersField = Field.class.getDeclaredField("modifiers");
+                    modifiersField.setAccessible(true);
+                    modifiersField.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+
+                    nameField.set(gameProfile, name);
+                } catch (Throwable throwable) {
+                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    GuardianLIB.getControl().getLogs().error(throwable);
+                    return;
+                }
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(player.getEntityId()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(craftPlayer.getHandle()));
+            }
+        }
+    }
+    public void changeName(Player player,Player[] players, String name){
+        CraftPlayer craftPlayer = (CraftPlayer)player;
+        if(craftPlayer == null) return;
+        GameProfile gameProfile = craftPlayer.getProfile();
+        if(gameProfile == null) return;
+        for(Player currentPlayer : players) {
+            CraftPlayer currentCraftPlayer = (CraftPlayer) currentPlayer;
+            if (currentCraftPlayer != null) {
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, craftPlayer.getHandle()));
+                try {
+                    Field nameField = GameProfile.class.getDeclaredField("name");
+                    nameField.setAccessible(true);
+
+                    Field modifiersField = Field.class.getDeclaredField("modifiers");
+                    modifiersField.setAccessible(true);
+                    modifiersField.setInt(nameField, nameField.getModifiers() & ~Modifier.FINAL);
+
+                    nameField.set(gameProfile, name);
+                } catch (Throwable throwable) {
+                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    GuardianLIB.getControl().getLogs().error(throwable);
+                    return;
+                }
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(player.getEntityId()));
+                currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(craftPlayer.getHandle()));
             }
         }
     }
