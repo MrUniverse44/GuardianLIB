@@ -6,6 +6,7 @@ import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.enums.InteractType;
 import dev.mruniverse.guardianlib.core.events.HologramInteractEvent;
 import dev.mruniverse.guardianlib.core.nms.NMS;
+import dev.mruniverse.guardianlib.core.utils.Logger;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,6 +50,18 @@ public final class NMSHandler implements NMS {
             PacketPlayOutTitle pTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, iComp);
             pConn.sendPacket(pTitle);
         }
+    }
+    @SuppressWarnings("unused")
+    public void setBlockData(org.bukkit.block.Block block,byte data) {
+        Logger logger = GuardianLIB.getControl().getLogs();
+        logger.info("This syntax is only for 1.8 to 1.12");
+        logger.info("This syntax can be used when you are developing a");
+        logger.info("block system in your plugin and you're with 1.13+ libs");
+        logger.info("In your project, if you want block data");
+        logger.info("You can use XMaterial (included in GuardianLIB)");
+        logger.info("With this syntax, you need check your server version");
+        logger.info("If the server is running in 1.8 to 1.12 this syntax will work");
+        logger.info("But if this server is 1.13+ only you need Block.setType((your XMaterial).parseMaterial())");
     }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
         EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld)holoLocation.getWorld()).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());

@@ -175,6 +175,10 @@ public final class NMSHandler implements NMS {
             (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(packetPlayOutWorldBorder);
         } catch (Throwable ignored) {}
     }
+    @SuppressWarnings("deprecation")
+    public void setBlockData(org.bukkit.block.Block block,byte data) {
+        block.setData(data);
+    }
     public void resetName(Player player,List<Player> players) {
         CraftPlayer craftPlayer = (CraftPlayer)player;
         if(craftPlayer == null) return;

@@ -50,6 +50,10 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+    @SuppressWarnings("deprecation")
+    public void setBlockData(org.bukkit.block.Block block,byte data) {
+        block.setData(data);
+    }
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
         EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld)holoLocation.getWorld()).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 

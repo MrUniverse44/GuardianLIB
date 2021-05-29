@@ -49,6 +49,10 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+    @SuppressWarnings("deprecation")
+    public void setBlockData(org.bukkit.block.Block block,byte data) {
+        block.setData(data);
+    }
 
     public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
         try {

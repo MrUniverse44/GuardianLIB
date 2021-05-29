@@ -53,6 +53,10 @@ public final class NMSHandler implements NMS {
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
     }
+    @SuppressWarnings("deprecation")
+    public void setBlockData(org.bukkit.block.Block block,byte data) {
+        block.setData(data);
+    }
     public void injectPlayer(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override

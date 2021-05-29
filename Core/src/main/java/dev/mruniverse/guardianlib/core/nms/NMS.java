@@ -3,6 +3,7 @@ package dev.mruniverse.guardianlib.core.nms;
 import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +27,7 @@ public interface NMS {
     void resetName(Player player,Player[] players);
     void changeName(Player player,List<Player> players, String name);
     void changeName(Player player,Player[] players, String name);
+    void setBlockData(Block block,byte data);
     Location getHologramLocation(String holoPrivateID);
     boolean BossHasPlayer(Player player);
     ItemStack getItemStack(Material material, String itemName, List<String> lore);
