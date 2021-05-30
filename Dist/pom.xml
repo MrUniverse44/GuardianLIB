@@ -1,13 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>GuardianLIB-Dist</artifactId>
-    <version>${project.parent.version}</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>dev.mruniverse.guardianlib</groupId>
         <artifactId>GuardianLIB-Parent</artifactId>
         <version>1.0.8-SNAPSHOT</version>
     </parent>
+
+    <artifactId>GuardianLIB-Dist</artifactId>
+
     <build>
         <directory>../target</directory>
         <finalName>GuardianLIB-${project.version}</finalName>
@@ -36,6 +37,31 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>dev.mruniverse.guardianlib</groupId>
+            <artifactId>GuardianLIB-NMS-v1_16_R3</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.mruniverse.guardianlib</groupId>
+            <artifactId>GuardianLIB-NMS-v1_16_R2</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.mruniverse.guardianlib</groupId>
+            <artifactId>GuardianLIB-NMS-v1_16_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.mruniverse.guardianlib</groupId>
+            <artifactId>GuardianLIB-NMS-v1_15_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.mruniverse.guardianlib</groupId>
+            <artifactId>GuardianLIB-NMS-v1_14_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>dev.mruniverse.guardianlib</groupId>
             <artifactId>GuardianLIB-Core</artifactId>

@@ -9,7 +9,7 @@
         <version>1.0.8-SNAPSHOT</version>
     </parent>
 
-    <artifactId>GLIB-NMS-v1_16_R3</artifactId>
+    <artifactId>GuardianLIB-NMS-v1_16_R3</artifactId>
     <name>GuardianLIB NMS v1_16_R3</name>
 
     <dependencies>
