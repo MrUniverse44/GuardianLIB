@@ -28,6 +28,7 @@ public interface NMS {
     void changeName(Player player,List<Player> players, String name);
     void changeName(Player player,Player[] players, String name);
     void setBlockData(Block block,byte data);
+    void updateBlock(Location blockLocation,Material material,byte data);
     Location getHologramLocation(String holoPrivateID);
     boolean BossHasPlayer(Player player);
     ItemStack getItemStack(Material material, String itemName, List<String> lore);

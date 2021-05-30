@@ -54,6 +54,14 @@ public final class NMSHandler implements NMS {
     public void setBlockData(org.bukkit.block.Block block,byte data) {
         block.setData(data);
     }
+    @SuppressWarnings("deprecation")
+    public void updateBlock(Location blockLocation,Material material,byte data) {
+        org.bukkit.World world = blockLocation.getWorld();
+        org.bukkit.block.Block block = world.getBlockAt(blockLocation);
+        block.setType(material);
+        block.setData(data);
+        block.getState().update(true);
+    }
     public void injectPlayer(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override

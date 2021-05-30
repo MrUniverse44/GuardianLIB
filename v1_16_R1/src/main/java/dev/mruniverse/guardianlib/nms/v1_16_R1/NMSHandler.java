@@ -204,7 +204,18 @@ public class NMSHandler implements NMS {
         logger.info("If the server is running in 1.8 to 1.12 this syntax will work");
         logger.info("But if this server is 1.13+ only you need Block.setType((your XMaterial).parseMaterial())");
     }
-
+    @SuppressWarnings("unused")
+    public void updateBlock(Location blockLocation,Material material,byte data) {
+        Logger logger = GuardianLIB.getControl().getLogs();
+        logger.info("This syntax is only for 1.8 to 1.12");
+        logger.info("This syntax can be used when you are developing a");
+        logger.info("block system in your plugin and you're with 1.13+ libs");
+        logger.info("In your project, if you want block data");
+        logger.info("You can use XMaterial (included in GuardianLIB)");
+        logger.info("With this syntax, you need check your server version");
+        logger.info("If the server is running in 1.8 to 1.12 this syntax will work");
+        logger.info("But if this server is 1.13+ only you need Block.setType((your XMaterial).parseMaterial())");
+    }
     @SuppressWarnings("rawtypes")
     public void readPacket(Packet packet, Player player) {
         if(packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {

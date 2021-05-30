@@ -54,6 +54,18 @@ public final class NMSHandler implements NMS {
         block.setData(data);
     }
 
+    @SuppressWarnings("deprecation")
+    public void updateBlock(Location blockLocation,Material material,byte data) {
+        org.bukkit.World world = blockLocation.getWorld();
+        org.bukkit.block.Block block = world.getBlockAt(blockLocation);
+        block.setType(material);
+        block.setData(data);
+        block.getState().update(true);
+    }
+    /*
+     *
+     */
+
     public void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
         try {
             WorldBorder worldBorder;
