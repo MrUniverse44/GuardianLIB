@@ -31,6 +31,7 @@
             <groupId>com.boydti</groupId>
             <artifactId>fawe-api</artifactId>
             <version>latest</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <repositories>
