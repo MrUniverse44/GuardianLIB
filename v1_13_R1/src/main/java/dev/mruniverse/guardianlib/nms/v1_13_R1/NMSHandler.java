@@ -12,6 +12,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -173,9 +175,7 @@ public final class NMSHandler implements NMS {
 
     public void sendActionBar(Player player, String msg) {
         String toBC = ChatColor.translateAlternateColorCodes('&', msg);
-        IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + toBC + "\"}");
-        PacketPlayOutChat bar = new PacketPlayOutChat(icbc);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(toBC));
     }
     public void sendBossBar(Player player, String message) {
         if(!BossHasPlayer(player)) {
