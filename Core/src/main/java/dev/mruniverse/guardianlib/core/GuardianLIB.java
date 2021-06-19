@@ -42,15 +42,15 @@ public final class GuardianLIB extends JavaPlugin {
         hasFAWE = getServer().getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
         utils = new Utils(this);
         hologramsLoaded = 0;
-        slimeWorldManager = new SlimeWorldManagerAddon(this);
         if(getServer().getPluginManager().isPluginEnabled("WorldEdit") || hasFAWE) {
             schematicManager = new SchematicManager(this,true);
         } else {
             logger.info("Schematics System disabled: &aNo World Edit plugin found &e& &aNo FAWE plugin found&e.");
             schematicManager = new SchematicManager(this,false);
         }
-        worldManager = new WorldController(this);
         fileStorage = new FileStorage(this);
+        worldManager = new WorldController(this);
+        slimeWorldManager = new SlimeWorldManagerAddon(this);
         getServer().getPluginManager().registerEvents(new JoinListener(this),this);
         getServer().getPluginManager().registerEvents(new HoloListener(this),this);
         nmsSetup();
