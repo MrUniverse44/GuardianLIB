@@ -16,6 +16,7 @@ public class versionVerificator {
         try {
             String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
             switch (version) {
+                case "v1_17_R1":
                 case "v1_16_R3":
                 case "v1_16_R2":
                 case "v1_16_R1":
