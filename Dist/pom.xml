@@ -39,11 +39,6 @@
     <dependencies>
         <dependency>
             <groupId>dev.mruniverse.guardianlib</groupId>
-            <artifactId>GuardianLIB-NMS-v1_17_R1</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.mruniverse.guardianlib</groupId>
             <artifactId>GuardianLIB-NMS-v1_16_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
