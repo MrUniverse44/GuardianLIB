@@ -265,6 +265,12 @@ public final class NMSHandler implements NMS {
         } catch(Throwable ignored) { }
         return result;
     }
+
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     public void spawnHologram(Player player,String holoPrivateID,String holoLineText,Location holoLocation) {
         EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(holoLocation.getWorld())).getHandle(), holoLocation.getX(), holoLocation.getY(), holoLocation.getZ());
 

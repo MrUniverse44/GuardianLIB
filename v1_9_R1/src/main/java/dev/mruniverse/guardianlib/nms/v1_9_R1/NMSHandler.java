@@ -273,6 +273,11 @@ public final class NMSHandler implements NMS {
         } catch (Throwable ignored) {}
     }
 
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     public void sendActionBar(Player player, String msg) {
         String toBC = ChatColor.translateAlternateColorCodes('&', msg);
         IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + toBC + "\"}");

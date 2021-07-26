@@ -315,6 +315,10 @@ public class NMSHandler implements NMS {
             }catch (Throwable ignored) {}
         }
     }
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
     public Location getHologramLocation(String holoPrivateID) {
         return hologramsID.get(holoPrivateID).getBukkitEntity().getLocation();
     }

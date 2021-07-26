@@ -52,6 +52,11 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     @SuppressWarnings("unused")
     public void updateBlock(Location blockLocation,Material material,byte data) {
         Logger logger = GuardianLIB.getControl().getLogs();

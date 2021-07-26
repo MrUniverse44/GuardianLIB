@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 @SuppressWarnings("unused")
 public interface NMS {
+    void loadChunkListener();
     void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle);
     void sendActionBar(Player player, String msg);
     void playerBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor);

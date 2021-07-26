@@ -136,6 +136,10 @@ public final class NMSHandler implements NMS {
             }catch (Throwable ignored) {}
         }
     }
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
     public void deleteHologram(Player player,String holoPrivateID) {
         if(!hologramsID.containsKey(holoPrivateID)) return;
         EntityArmorStand armorStand = hologramsID.remove(holoPrivateID);

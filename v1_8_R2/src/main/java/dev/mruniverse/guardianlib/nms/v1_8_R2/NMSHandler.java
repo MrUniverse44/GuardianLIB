@@ -50,6 +50,12 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     public void injectPlayer(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override

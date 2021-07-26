@@ -276,6 +276,11 @@ public final class NMSHandler implements NMS {
         }
     }
 
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     public void sendActionBar(Player player, String msg) {
         String toBC = ChatColor.translateAlternateColorCodes('&', msg);
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(toBC));

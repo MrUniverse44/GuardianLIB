@@ -49,6 +49,12 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+
+    public void loadChunkListener() {
+        GuardianLIB lib = GuardianLIB.getControl();
+        lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
+    }
+
     @SuppressWarnings("deprecation")
     public void setBlockData(org.bukkit.block.Block block,byte data) {
         block.setData(data);
