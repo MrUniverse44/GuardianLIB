@@ -4,9 +4,11 @@ import dev.mruniverse.guardianlib.core.events.GuardianMenuClickEvent;
 import dev.mruniverse.guardianlib.core.menus.interfaces.GuardianItems;
 import dev.mruniverse.guardianlib.core.menus.interfaces.GuardianMenu;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,6 +39,25 @@ public class MenuListener implements Listener {
              *
              */
 
+        }
+    }
+
+    @EventHandler
+    public void onInventory(InventoryClickEvent event) {
+        ItemStack currentItem = event.getCurrentItem();
+
+        if (currentItem != null) {
+            if (currentItem.getItemMeta() == null) return;
+
+            for(Map.Entry<ItemStack, GuardianItems> entry : guardianMenu.getItems().entrySet()) {
+                ItemStack item = entry.getKey();
+                if(currentItem.getType().equals(item.getType()) && currentItem.getItemMeta().equals(item.getItemMeta())) {
+                    event.setCancelled(guardianMenu.isCancellable());
+                    Player player = (Player)event.getWhoClicked();
+                    GuardianMenuClickEvent customEvent = new GuardianMenuClickEvent(player,entry.getValue(),guardianMenu.getMenu());
+                    Bukkit.getServer().getPluginManager().callEvent(customEvent);
+                }
+            }
         }
     }
 }
