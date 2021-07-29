@@ -38,7 +38,5 @@ public class HologramInteractEvent extends Event {
     public @NotNull HandlerList getHandlers() {
         return handlerList;
     }
-    public static @NotNull HandlerList getHandlerList() {
-        return handlerList;
-    }
+    public static HandlerList getHandlerList() { return handlerList; }
 }

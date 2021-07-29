@@ -40,7 +40,5 @@ public class GuardianMenuClickEvent extends Event {
         return handlerList;
     }
 
-    public static @NotNull HandlerList getHandlerList() {
-        return handlerList;
-    }
+    public static HandlerList getHandlerList() { return handlerList; }
 }
