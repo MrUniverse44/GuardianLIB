@@ -177,6 +177,7 @@ public class GuardianMenuBuilder implements GuardianMenu {
         for(GuardianItems item : currentIdentifier) {
             String path = item.getPath();
             if(fileConfiguration.getBoolean(path + "toggle")) {
+                Bukkit.getLogger().info("[Guardian LIB] Adding item: " + item.getID() + " to menu: " + currentMenu.getName());
                 String name = fileConfiguration.getString(path + "name","Unknown Item Name");
                 String material = fileConfiguration.getString(path + "item","BEDROCK");
                 List<String> lore = fileConfiguration.getStringList(path + "lore");

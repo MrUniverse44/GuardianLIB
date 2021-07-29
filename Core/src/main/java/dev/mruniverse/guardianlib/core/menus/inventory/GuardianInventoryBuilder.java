@@ -4,6 +4,7 @@ import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.menus.interfaces.GuardianInventory;
 import dev.mruniverse.guardianlib.core.menus.interfaces.GuardianItems;
 import dev.mruniverse.guardianlib.core.utils.xseries.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class GuardianInventoryBuilder implements GuardianInventory {
     private String currentID;
 
@@ -29,6 +31,7 @@ public class GuardianInventoryBuilder implements GuardianInventory {
 
     @Override
     public GuardianInventory setID(String menuID) {
+        Bukkit.getLogger().info("[Guardian LIB] Inventory ID: " + menuID + " created!");
         this.currentID = menuID;
         return this;
     }
@@ -63,6 +66,7 @@ public class GuardianInventoryBuilder implements GuardianInventory {
     public GuardianInventory setItems(FileConfiguration fileConfiguration, GuardianItems[] itemIdentifier) {
         this.fileConfiguration = fileConfiguration;
         this.currentIdentifier = itemIdentifier;
+        updateNow();
         return this;
     }
 
@@ -118,6 +122,7 @@ public class GuardianInventoryBuilder implements GuardianInventory {
         MENUS_ITEMS.clear();
         MENUS_ITEM_SLOT.clear();
         for(GuardianItems item : currentIdentifier) {
+            Bukkit.getLogger().info("[Guardian LIB] Adding item: " + item.getID() + " to inventory: " + currentID);
             String path = item.getPath();
             if(fileConfiguration.getBoolean(path + "toggle")) {
                 String name = fileConfiguration.getString(path + "name","Unknown Item Name");
