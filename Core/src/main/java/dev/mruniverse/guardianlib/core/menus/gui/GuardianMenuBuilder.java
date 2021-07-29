@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class GuardianMenuBuilder implements GuardianMenu {
     private Menus currentMenu;
 
@@ -54,8 +55,7 @@ public class GuardianMenuBuilder implements GuardianMenu {
 
     @Override
     public GuardianMenu setRows(int size) {
-        if(size >= 7) size = getRows(size);
-        this.menuSize = size;
+        this.menuSize = getRows(size);
         return this;
     }
 
@@ -125,6 +125,7 @@ public class GuardianMenuBuilder implements GuardianMenu {
 
     @Override
     public GuardianMenu createMenu() {
+        Bukkit.getLogger().info("Creating menu with size: " + menuSize + " named: " + menuTitle);
         inventory = Bukkit.getServer().createInventory(inventoryOwner,menuSize,menuTitle);
         return this;
     }
