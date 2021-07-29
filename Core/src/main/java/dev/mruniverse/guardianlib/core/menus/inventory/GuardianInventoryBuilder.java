@@ -17,13 +17,13 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class GuardianInventoryBuilder implements GuardianInventory {
-    private String currentID;
+    private String currentID = null;
 
-    private GuardianItems[] currentIdentifier;
+    private GuardianItems[] currentIdentifier = null;
 
-    private HashMap<ItemStack,Integer> MENUS_ITEM_SLOT;
+    private HashMap<ItemStack,Integer> MENUS_ITEM_SLOT = new HashMap<>();
 
-    private HashMap<ItemStack,GuardianItems> MENUS_ITEMS;
+    private HashMap<ItemStack,GuardianItems> MENUS_ITEMS = new HashMap<>();
 
     private FileConfiguration fileConfiguration = null;
 

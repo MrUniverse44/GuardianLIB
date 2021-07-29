@@ -21,17 +21,17 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class GuardianMenuBuilder implements GuardianMenu {
-    private Menus currentMenu;
+    private Menus currentMenu = null;
 
-    private GuardianItems[] currentIdentifier;
+    private GuardianItems[] currentIdentifier = null;
 
     private int menuSize = 3;
 
     private String menuTitle = "Menu Builder";
 
-    private HashMap<ItemStack,Integer> MENUS_ITEM_SLOT;
+    private HashMap<ItemStack,Integer> MENUS_ITEM_SLOT = new HashMap<>();
 
-    private HashMap<ItemStack,GuardianItems> MENUS_ITEMS;
+    private HashMap<ItemStack,GuardianItems> MENUS_ITEMS = new HashMap<>();
 
     private FileConfiguration fileConfiguration = null;
 
