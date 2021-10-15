@@ -2,6 +2,8 @@
 
 <img alt="GuardianLIB Image" src="https://i.imgur.com/ZmIomKW.png" class="center">
 
+[![](https://jitpack.io/v/MrUniverse44/GuardianLIB.svg)](https://jitpack.io/#MrUniverse44/GuardianLIB)
+
 GuardianLIB is a library created for plugins from Darkness Development
 
 Features:
