@@ -1,5 +1,8 @@
 package dev.mruniverse.guardianlib.core.utils;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.ViaAPI;
 import dev.mruniverse.guardianlib.core.GuardianLIB;
 import dev.mruniverse.guardianlib.core.enums.BorderColor;
 import dev.mruniverse.guardianlib.core.enums.HologramType;
@@ -49,6 +52,17 @@ public class Utils {
     }
     public void setPlayerWorldBorder(Player player, Location borderCenter, int borderSize, BorderColor borderColor) {
         plugin.getNMS().playerBorder(player,borderCenter,borderSize,borderColor);
+    }
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public int getProtocolVersion(final Player player) {
+        if(plugin.hasViaVersion()) {
+            ViaAPI api = Via.getAPI();
+            return api.getPlayerVersion(player);
+        }
+        if(plugin.hasProtocolLib()) {
+            return ProtocolLibrary.getProtocolManager().getProtocolVersion(player);
+        }
+        return -1;
     }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {

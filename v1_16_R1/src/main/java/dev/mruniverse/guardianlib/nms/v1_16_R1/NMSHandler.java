@@ -54,6 +54,12 @@ public class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+
+    public void showElderGuardian(Player player,boolean longDistance,float x,float y,float z,float offsetX,float offsetY,float offsetZ,float extra,int count) {
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(Particles.ELDER_GUARDIAN, longDistance, x, y, z, offsetX, offsetY, offsetZ, extra, count);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public void injectPlayer(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override

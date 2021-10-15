@@ -57,6 +57,7 @@ public class WorldController {
         world.setAutoSave(false);
     }
 
+    @SuppressWarnings("unused")
     public void importWorld(String gameName,String worldName, boolean importMap) {
         if (importMap) {
             importWorld2(gameName,worldName, false);
@@ -83,6 +84,7 @@ public class WorldController {
             if (!target.exists())
                 target.mkdir();
             String[] files = source.list();
+            if(files == null) return;
             for (String file : files) {
                 File srcFile = new File(source, file);
                 File destFile = new File(target, file);

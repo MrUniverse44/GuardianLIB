@@ -12,6 +12,7 @@ import dev.mruniverse.guardianlib.core.utils.Utils;
 import dev.mruniverse.guardianlib.core.utils.world.SlimeWorldManagerAddon;
 import dev.mruniverse.guardianlib.core.utils.world.WorldController;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -32,14 +33,19 @@ public final class GuardianLIB extends JavaPlugin {
     private Logger logger;
     private Utils utils;
     private int hologramsLoaded;
+    public boolean hasVia = false;
+    public boolean hasProtocol = false;
 
     @Override
     public void onEnable() {
         instance = this;
         armorStands = new HashMap<>();
         logger = new Logger(this);
-        hasPAPI = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
-        hasFAWE = getServer().getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+        PluginManager manager = getServer().getPluginManager();
+        hasVia = manager.isPluginEnabled("ViaVersion");
+        hasPAPI = manager.isPluginEnabled("PlaceholderAPI");
+        hasProtocol = manager.isPluginEnabled("ProtocolLIB");
+        hasFAWE = manager.isPluginEnabled("FastAsyncWorldEdit");
         utils = new Utils(this);
         hologramsLoaded = 0;
         if(getServer().getPluginManager().isPluginEnabled("WorldEdit") || hasFAWE) {
@@ -47,6 +53,15 @@ public final class GuardianLIB extends JavaPlugin {
         } else {
             logger.info("Schematics System disabled: &aNo World Edit plugin found &e& &aNo FAWE plugin found&e.");
             schematicManager = new SchematicManager(this,false);
+        }
+        if(hasVia) {
+            logger.info("ProtocolAPI from GuardianLIB will use ViaVersionAPI to get the protocol version of the player.");
+        } else {
+            if(hasProtocol) {
+                logger.info("ProtocolAPI from GuardianLIB will use ProtocolLIB to get the protocol version of the player.");
+            } else {
+                logger.info("ProtocolAPI from GuardianLIB will not work because this API need ProtocolLIB or ViaVersion to work.");
+            }
         }
         fileStorage = new FileStorage(this);
         worldManager = new WorldController(this);
@@ -100,6 +115,8 @@ public final class GuardianLIB extends JavaPlugin {
     public boolean hasPAPI() {
         return hasPAPI;
     }
+    public boolean hasViaVersion() { return hasVia; }
+    public boolean hasProtocolLib() { return hasProtocol; }
     public boolean hasFAWE() { return hasFAWE; }
     public static GuardianLIB getInstance() {
         return instance;

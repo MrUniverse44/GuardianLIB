@@ -53,6 +53,12 @@ public final class NMSHandler implements NMS {
             pConn.sendPacket(pTitle);
         }
     }
+
+    public void showElderGuardian(Player player,boolean longDistance,float x,float y,float z,float offsetX,float offsetY,float offsetZ,float extra,int count) {
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(Particles.o, longDistance, x, y, z, offsetX, offsetY, offsetZ, extra, count);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     @SuppressWarnings("unused")
     public void setBlockData(org.bukkit.block.Block block,byte data) {
         Logger logger = GuardianLIB.getControl().getLogs();

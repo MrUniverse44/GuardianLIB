@@ -51,6 +51,11 @@ public final class NMSHandler implements NMS {
         }
     }
 
+    public void showElderGuardian(Player player,boolean longDistance,float x,float y,float z,float offsetX,float offsetY,float offsetZ,float extra,int count) {
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.MOB_APPEARANCE, longDistance, x, y, z, offsetX, offsetY, offsetZ, extra, count);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public void loadChunkListener() {
         GuardianLIB lib = GuardianLIB.getControl();
         lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);

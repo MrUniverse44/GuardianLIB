@@ -30,6 +30,7 @@ import java.util.Map;
 public final class NMSHandler implements NMS {
     private final HashMap<Player,EntityWither> bossBar = new HashMap<>();
     private final HashMap<String,EntityArmorStand> hologramsID = new HashMap<>();
+    private final GuardianLIB lib = GuardianLIB.getControl();
     public void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
         PlayerConnection pConn = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle pTitleInfo = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
@@ -51,7 +52,6 @@ public final class NMSHandler implements NMS {
     }
 
     public void loadChunkListener() {
-        GuardianLIB lib = GuardianLIB.getControl();
         lib.getServer().getPluginManager().registerEvents(new ChunkListener(lib),lib);
     }
 
@@ -201,8 +201,8 @@ public final class NMSHandler implements NMS {
 
                     nameField.set(gameProfile, player.getDisplayName());
                 } catch (Throwable throwable) {
-                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
-                    GuardianLIB.getControl().getLogs().error(throwable);
+                    lib.getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    lib.getLogs().error(throwable);
                     return;
                 }
                 currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
@@ -230,8 +230,8 @@ public final class NMSHandler implements NMS {
 
                     nameField.set(gameProfile, name);
                 } catch (Throwable throwable) {
-                    GuardianLIB.getControl().getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
-                    GuardianLIB.getControl().getLogs().error(throwable);
+                    lib.getLogs().error("(NameTag System) Can't set nameTag for " + player.getName());
+                    lib.getLogs().error(throwable);
                     return;
                 }
                 currentCraftPlayer.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, craftPlayer.getHandle()));
@@ -350,6 +350,11 @@ public final class NMSHandler implements NMS {
         getBossBar(player).setInvisible(true);
         getBossBar(player).setLocation(witherLocation.getX(), witherLocation.getY(), witherLocation.getZ(), 0, 0);
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
+    public void showElderGuardian(Player player,boolean longDistance,float x,float y,float z,float offsetX,float offsetY,float offsetZ,float extra,int count) {
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.MOB_APPEARANCE, longDistance, x, y, z, offsetX, offsetY, offsetZ, extra, count);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 

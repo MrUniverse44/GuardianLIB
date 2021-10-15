@@ -12,19 +12,23 @@ public class SlimeWorldManagerAddon {
     private GuardianLIB plugin;
     private SlimePlugin slime;
     private SlimeLoader loader;
+    private boolean swm = false;
 
     public SlimeWorldManagerAddon(GuardianLIB plugin) {
         if(Bukkit.getPluginManager().getPlugin("SlimeWorldManager") != null) {
             this.plugin = plugin;
             this.slime = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
             assert this.slime != null;
+            swm = true;
             this.loader = this.slime.getLoader(plugin.getStorage().getConfig().getString("settings.SlimeWorld.loadType"));
-        } else {
-            plugin.getLogs().error("The server doesn't have installed SlimeWorldManager, the plugin can give errors if an plugin uses the SlimeWorldManager API in GuardianLIB.");
         }
     }
 
     public void createWorld(String worldName,String worldID) {
+        if(!swm) {
+            plugin.getLogs().error("SlimeWorldManager is not installed in this server.");
+            return;
+        }
         try {
             SlimePropertyMap props = new SlimePropertyMap();
             props.setString(SlimeProperties.DIFFICULTY, "normal");
@@ -42,7 +46,9 @@ public class SlimeWorldManagerAddon {
     }
 
     public void saveWorld(String worldName,String worldID) {
-
+        if(!swm) {
+            plugin.getLogs().error("SlimeWorldManager is not installed in this server.");
+        }
     }
 
     public void unloadworld(String name) {
